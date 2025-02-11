@@ -1,0 +1,98 @@
+/* General Navbar Styles */
+.navbar {
+    background-color: #7a1524;
+    padding: 15px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0px 4px 6px rgba(218, 101, 91, 0.1);
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between; /* Space between logo and menu */
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Logo Styling */
+.logo {
+    display: flex;
+    align-items: center;  /* Vertically centers logo */
+    justify-content: flex-start; /* Align logo to the left */
+}
+
+.logo img {
+    height: 50px;
+    margin-left: -170px; 
+}
+
+.logo h2 {
+    color: #ecf0f1;
+    font-size: 20px;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+/* Navigation Links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links li {
+    display: inline-block;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #ecf0f1;
+    font-size: 18px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #f39c12;
+}
+
+/* Hamburger Menu (Mobile) */
+.menu-icon {
+    display: none;
+    font-size: 24px;
+    color: #ecf0f1;
+    cursor: pointer;
+}
+
+
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .menu-icon {
+        display: block;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: #34495e;
+        flex-direction: column;
+        display: none;
+        text-align: center;
+    }
+
+    .nav-links.open {
+        display: flex;
+        padding: 15px 0;
+    }
+
+    .nav-links li {
+        padding: 10px 0;
+    }
+}
