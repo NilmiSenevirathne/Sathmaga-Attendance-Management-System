@@ -1,13 +1,46 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import './home.css';
+import bg1 from '../../images/bg1.webp'; 
+import bg2 from '../../images/bg2.jpg';
+import bg3 from '../../images/bg3.jpg';
+import Navbar from '../Navbar/Navbar';
+
+const images = [bg1,bg2,bg3];
 
 function Home() {
+  const [currentImage, setCurrentImage] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prevImage) => (prevImage + 1) % images.length);
+    }, 7000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleButtonClick = () => {
+    alert("Button clicked!");
+  };
+
   return (
     <div>
-           <div className='home-container'> 
-                <h1>Welcome to <br/> Sathmaga Attendance Management System</h1>
-           </div>
-    </div>
-  )
+      <div> <Navbar/></div>
+      
+      <div
+        className="home-container"
+        style={{ backgroundImage: `url(${images[currentImage]})` }} // Corrected template string
+      >
+        <h1> Sathmaga Attendance Management System</h1>
+       
+        <button className='btn-container' onClick={handleButtonClick}>
+              Login
+        </button>
+      </div>
+      
+      
+    
+   </div>
+  );
 }
 
-export default Home
+export default Home;
