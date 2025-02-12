@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import './home.css';
 import bg1 from '../../images/bg1.webp'; 
 import bg2 from '../../images/bg2.jpg';
@@ -9,6 +10,7 @@ const images = [bg1,bg2,bg4];
 
 function Home() {
   const [currentImage, setCurrentImage] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -19,7 +21,7 @@ function Home() {
   }, []);
 
   const handleButtonClick = () => {
-    alert("Button clicked!");
+    navigate('/Login')
   };
 
   return (
