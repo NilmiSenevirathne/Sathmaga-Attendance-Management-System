@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { Link } from "react-router-dom";
 import './navbar.css';
 import logo from '../../Images/sathmagalogo.png';
+
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Example onClick function for the button
- 
+  // Refs for smooth scrolling
+  const aboutRef = useRef(null);
+  const contactRef = useRef(null);
+
+  const scrollToSection = (ref) => {
+    if (ref && ref.current) {
+      ref.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <nav className="navbar">
@@ -15,7 +24,7 @@ function Navbar() {
         {/* Logo */}
         <div className="logo">
           <img src={logo} alt="Logo" />
-          <h2>Sathmaga Educational Institute</h2>
+          <h2>සත්මග  අධ්‍යාපන ආයතනය</h2>
         </div>
 
         {/* Hamburger Menu (Mobile) */}
@@ -25,13 +34,11 @@ function Navbar() {
 
         {/* Navigation Links */}
         <ul className={`nav-links ${isOpen ? 'open' : ''}`}>
-          <li><a href="/">Home</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/features">Features</a></li>
-          <li><a href="/contact">Contact</a></li>
-          
+          <li><Link to="/">Home</Link></li>
+          <li><button onClick={() => scrollToSection(aboutRef)} className="nav-button">About</button></li>
+          <li><Link to="/features">Features</Link></li>
+          <li><button onClick={() => scrollToSection(contactRef)} className="nav-button">Contact</button></li>
         </ul>
-
       </div>
     </nav>
   );
