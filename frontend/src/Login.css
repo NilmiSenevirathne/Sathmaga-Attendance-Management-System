@@ -3,9 +3,11 @@
     height: 100vh;
     width: 100%;
     font-family: "Arial", sans-serif;
-    background: url('../../frontend/src//images//background.png');
-    background-size: 100%;
+    background: url('../../frontend/src//Images//background.png');
+    background-size: 900px 900px;
     background-position:left;
+    background-repeat: no-repeat;
+
    
 
     
@@ -86,21 +88,23 @@
     font-size: 18px;
     color: #555;
 }
+
+/* #ffeb3b */
 .submitbtn{
     width:100%;
     padding: 12px;
-    background: #ffeb3b;
+    background: #7a1524;    
     border: none;
     border-radius: 8px;
     font-family: 18px;
-    color:#0f0101;
+    color:white;
     cursor: pointer;
     margin-top:15px;
     
 }
 
 .submitbtn:hover{
-    background: #ffca28;
+    background: #992a05;
 }
 
 @keyframes fadeIn {
