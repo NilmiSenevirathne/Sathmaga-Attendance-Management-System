@@ -21,19 +21,20 @@
 /* Logo Styling */
 .logo {
     display: flex;
-    align-items: center;  /* Vertically centers logo */
-    justify-content: flex-start; /* Align logo to the left */
+    align-items: center;
+    margin-left: -150px;
 }
 
 .logo img {
     height: 50px;
-    margin-left: -170px; 
+    margin-right: 5px;
+    
 }
 
 .logo h2 {
     color: #ecf0f1;
     font-size: 20px;
-    font-family:Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 /* Navigation Links */
@@ -41,6 +42,7 @@
     list-style: none;
     display: flex;
     gap: 20px;
+    align-items: center;
 }
 
 .nav-links li {
@@ -48,15 +50,23 @@
     font-family: 'Times New Roman', Times, serif;
 }
 
-.nav-links a {
+/* Common Style for Links and Buttons */
+.nav-links a,
+.nav-links .nav-button {
     text-decoration: none;
     color: #ecf0f1;
     font-size: 18px;
     font-weight: 500;
     transition: color 0.3s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-family: 'Times New Roman', Times, serif;
 }
 
-.nav-links a:hover {
+.nav-links a:hover,
+.nav-links .nav-button:hover {
     color: #f39c12;
 }
 
@@ -67,8 +77,6 @@
     color: #ecf0f1;
     cursor: pointer;
 }
-
-
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
@@ -85,14 +93,21 @@
         flex-direction: column;
         display: none;
         text-align: center;
+        padding: 10px 0;
     }
 
     .nav-links.open {
         display: flex;
-        padding: 15px 0;
     }
 
     .nav-links li {
         padding: 10px 0;
+    }
+
+    .nav-links a,
+    .nav-links .nav-button {
+        font-size: 16px;
+        padding: 10px;
+        width: 100%;
     }
 }
