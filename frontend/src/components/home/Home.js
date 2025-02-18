@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import './home.css';
-import bg1 from '../../Images/bg1.webp'; 
-import bg2 from '../../Images/bg2.jpg';
-import bg4 from '../../Images/bg4.png';
+import bg1 from '../../images/bg1.webp'; 
+import bg2 from '../../images/bg2.jpg';
+import bg4 from '../../images/bg4.png';
 import Navbar from '../Navbar/Navbar';
 
 
