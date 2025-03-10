@@ -5,6 +5,7 @@ import axios from "axios";
 function Login() {
   const [ email, setEmail]= useState("");
   const [ password, setPassword]= useState("");
+
   const [error, setError]= useState("");
 
   const handleLogin = async (e) => {
@@ -13,9 +14,19 @@ function Login() {
 
     try{
       const response = await axios.post("http://localhost:8082/login", {email, password});
+      console.log(response.data);
       alert("Login Successful");
+     
       localStorage.setItem("token",response.data.token);
-
+      localStorage.setItem("role",response.data.role)
+      if (response.data.role === "teacher"){
+      window.location.href = "/TeacherDashboard";
+      }
+      else {
+        window.location.href = "/";
+      }
+      
+    
     }catch(err){
       setError(err.response?.data?.error || "Login Failed");
     }
