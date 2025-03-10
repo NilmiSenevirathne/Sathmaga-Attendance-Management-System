@@ -1,8 +1,11 @@
 const express = require("express");
+const app = express();
+
+
 const mysql = require("mysql2");
 const cors = require("cors");
 const path = require("path");
-const app = express();
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");  
 
@@ -13,12 +16,12 @@ const jwt = require("jsonwebtoken");
 
 app.use(express.json());
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: "*",
   credentials: true
 }));
 
 // create connnection
-const port = 8081;
+const port = 8082;
 
 const db = mysql.createPool({
   host: "localhost",
@@ -54,6 +57,8 @@ app.post("/login", (req, res) => {
   console.log(`Executing SQL: ${sql} with email: ${email}`);
 
   db.query(sql, [email], async (err, results) => {
+
+    
       if (err) return res.status(500).json({ error: "Database error" });
 
       if (results.length === 0) {
@@ -64,8 +69,8 @@ app.post("/login", (req, res) => {
       const user = results[0];
       console.log("user data from DB", user);
     
-      const passwordMatch = await bcrypt.compare(password, user.password);
-      if (!passwordMatch) {
+      
+      if (password !== user.password) {
           return res.status(401).json({ error: "Invalid email or password" });
       }
 
