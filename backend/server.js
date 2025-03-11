@@ -1,8 +1,11 @@
 const express = require("express");
+const app = express();
+
+
 const mysql = require("mysql2");
 const cors = require("cors");
 const path = require("path");
-const app = express();
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");  
 
@@ -10,8 +13,12 @@ const jwt = require("jsonwebtoken");
 //path.resolve()
 
 // app.use(express.static(path.join(__dirname, "public")));
-app.use(cors());
+
 app.use(express.json());
+app.use(cors({
+  origin: "*",
+  credentials: true
+}));
 
 // create connnection
 const port = 8082;
@@ -21,6 +28,7 @@ const db = mysql.createPool({
   user: "root",
   password: "1234",
   database: "sathmagadb"
+  
 });
 
 //test
@@ -38,34 +46,57 @@ db.getConnection((err, connection)=> {
 
 // login route
 app.post("/login", (req, res) => {
-    const { email, password} = req.body;
+  const { email, password } = req.body;
 
-    if(!email || !password){
-      return res.status(400).json({ error: " Email and password are required" });
-    }
+  if (!email || !password) {
+      console.log("Login failed: Missing email or password");
+      return res.status(400).json({ error: "Email and password are required" });
+  }
 
-    const sql = "SELECT * FROM user WHERE email = ?";
-    db.query(sql, [email], (err, results) =>{
-      if(err) return res.status(500).json({error: "Database error"});
+  const sql = "SELECT user_id, email, role, password FROM user WHERE email = ?";
+  console.log(`Executing SQL: ${sql} with email: ${email}`);
 
-      if(results.length === 0){
-        return res.status(401).json({error : "Invalid email or password"});
+  db.query(sql, [email], async (err, results) => {
+
+    
+      if (err) return res.status(500).json({ error: "Database error" });
+
+      if (results.length === 0) {
+          console.log("Login failed: No user found for email", email);
+          return res.status(401).json({ error: "Invalid email or password" });
       }
 
       const user = results[0];
+      console.log("user data from DB", user);
+    
+      
+      if (password !== user.password) {
+          return res.status(401).json({ error: "Invalid email or password" });
+      }
 
-      bcrypt.compare(password,user.password, (err, match) => {
-        if(err) return res.status(500).json({error: "Error varifying password"});
+      
+      const token = jwt.sign(
+          { id: user.user_id, email: user.email, role: user.role },
+          "secretkey",
+          { expiresIn: "1h" }
+      );
 
-        if(!match){
-          return res.status(401).json({error: "Invalid email or password"});
-        }
-
-        const token = jwt.sign({id: user.id, email: user.email}, "secretkey", {expiresIn: "1h"});
-        return res.json({message: "Login Successful", token});
-      });
+      console.log("Response data:", {
+        message: "Login Successful",
+        token,
+        role: user.role,  
+        
     });
+
+      return res.json({
+          message: "Login Successful",
+          token,
+          role: user.role
+        
+      });
+  });
 });
+
 
 //server start
 app.listen(port, () => {
