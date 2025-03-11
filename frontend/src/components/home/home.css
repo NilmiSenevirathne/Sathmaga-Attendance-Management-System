@@ -76,7 +76,7 @@
   flex-wrap: wrap;
   gap: 30px;
   position: relative;
-  background-image: url('../../images/about.jpg');
+  color: #ffffff;
   background-size: cover;
   background-position: center;
   height: 100vh;
@@ -90,7 +90,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
   filter: blur(10px);
   z-index: -1;
 }
@@ -101,7 +101,7 @@
   width: 60%;
   position: relative;
   z-index: 1;
-  color: #fff;
+  color: #000000;
   animation: fadeInLeft 2s ease-out;
 }
 
@@ -226,6 +226,120 @@
       opacity: 1;
     }
   }
+
+  /* Contact Section Styles */
+.contact-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  padding: 60px 20px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 3s ease-in-out;
+}
+
+/* Dark overlay for contact section */
+.contact-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: white;
+  z-index: 1; /* Ensure overlay is above the background */
+}
+
+/* Ensure text appears above the overlay */
+.contact-section * {
+  position: relative;
+  z-index: 2;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8); /* Optional: Add text shadow to highlight text */
+}
+
+/* Contact heading */
+.contact-container h2 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  animation: fadeIn 1s ease-out; /* Fade-in effect */
+}
+
+/* Contact paragraph styling */
+.contact-container p {
+  font-size: 18px;
+  margin-bottom: 10px;
+  line-height: 1.5;
+  animation: fadeIn 2s ease-out; /* Fade-in effect */
+}
+
+/* Add hover effect for contact information */
+.contact-container p:hover {
+  color: #ffcc00; /* Highlight text on hover */
+}
+
+/* Contact container for alignment and padding */
+.contact-container {
+  position: relative;
+  z-index: 2; /* Ensure it's above the overlay */
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: rgba(0, 0, 0, 0.7); /* Dark background to enhance contrast */
+  border-radius: 8px;
+  animation: fadeInUp 2s ease-out;
+}
+
+/* Fade-In effect for text */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Fade-In Up effect */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .contact-section {
+    padding: 40px 10px;
+  }
+
+  .contact-container {
+    padding: 20px;
+  }
+
+  .contact-container h2 {
+    font-size: 2.5rem;
+  }
+
+  .contact-container p {
+    font-size: 16px;
+  }
+}
 
 
   
