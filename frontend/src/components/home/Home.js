@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import './home.css';
 
-import bg1 from '../../images/bg1.webp'; 
+import bg1 from '../../images/bg1.jpg'; 
 import bg2 from '../../images/bg2.jpg';
-import bg4 from '../../images/bg4.png';
+import bg4 from '../../images/bg4.jpg';
 import { Card, CardActionArea, CardMedia, CardContent, Typography } from '@mui/material';
 import vision from '../../images/vision.webp'
 import mission from '../../images/mission.jpg'
