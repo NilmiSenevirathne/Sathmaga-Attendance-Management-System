@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import './home.css';
+
+import bg1 from '../../images/bg1.webp'; 
+import bg2 from '../../images/bg2.jpg';
+import bg4 from '../../images/bg4.png';
 import { Card, CardActionArea, CardMedia, CardContent, Typography } from '@mui/material';
 import bg1 from '../../images/bg1.webp';
 import bg2 from '../../images/bg2.jpg';
