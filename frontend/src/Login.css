@@ -5,8 +5,8 @@
     width: 100%;
     justify-content: center;
     align-items: center;
-    background: url('../../frontend/src/images/bg4.png');
-      
+    /* background: url('../../frontend/src/images/bg4.png'); */
+    background-color: rgb(239, 231, 229);
     background-size: cover, cover;
     background-position: left center, right center;
     background-repeat: no-repeat, no-repeat;
