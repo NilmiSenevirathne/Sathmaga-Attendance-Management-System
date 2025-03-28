@@ -12,7 +12,7 @@ function Login() {
     setError("");
 
     try{
-      const response = await axios.post("http://localhost:8082/login", {email, password});
+      const response = await axios.post("http://localhost:3001/login", {email, password});
       alert("Login Successful");
       localStorage.setItem("token",response.data.token);
 
