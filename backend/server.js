@@ -1,73 +1,79 @@
 const express = require("express");
-const mysql = require("mysql2");
-const cors = require("cors");
-const path = require("path");
-const app = express();
+const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");  
+const jwt = require("jsonwebtoken");
+const userRoutes = require("./router");
+const { User } = require("./model"); // Explicitly import User model
 
+const app = express();
 
-//path.resolve()
-
-// app.use(express.static(path.join(__dirname, "public")));
-app.use(cors());
+// Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// create connnection
-const port = 8082;
-
-const db = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: "1234",
-  database: "sathmagadb"
+// CORS middleware
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
 });
 
-//test
-db.getConnection((err, connection)=> {
-  if(err){
-      console.error("Error connection to the database", err);
-      return;
-    }
-  else {
-    console.log("Connected to the MySQL database");
-    connection.release();   
-  }
+// MongoDB Connection
+mongoose.connect('mongodb+srv://SathmagaEdu:sathmaga123@cluster0.3vbhh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true 
 })
+.then(() => console.log("Connected to the MongoDB database"))
+.catch((err) => {
+    console.error("Error connecting to the database", err);
+    process.exit(1);
+});
 
+// Routes
+app.use("/api", userRoutes);
+app.post("/login" , async (req, res) => {  });
 
-// login route
-app.post("/login", (req, res) => {
-    const { email, password} = req.body;
+// Login route
+app.post("/login", async (req, res) => {
+    try {
+        const { email, password } = req.body;
 
-    if(!email || !password){
-      return res.status(400).json({ error: " Email and password are required" });
-    }
-
-    const sql = "SELECT * FROM user WHERE email = ?";
-    db.query(sql, [email], (err, results) =>{
-      if(err) return res.status(500).json({error: "Database error"});
-
-      if(results.length === 0){
-        return res.status(401).json({error : "Invalid email or password"});
-      }
-
-      const user = results[0];
-
-      bcrypt.compare(password,user.password, (err, match) => {
-        if(err) return res.status(500).json({error: "Error varifying password"});
-
-        if(!match){
-          return res.status(401).json({error: "Invalid email or password"});
+        if (!email || !password) {
+            return res.status(400).json({ error: "Email and password are required" });
         }
 
-        const token = jwt.sign({id: user.id, email: user.email}, "secretkey", {expiresIn: "1h"});
-        return res.json({message: "Login Successful", token});
-      });
-    });
+        // Find user by email
+        const user = await User.findOne({ email: email.toLowerCase() });
+
+        if (!user) {
+            return res.status(401).json({ error: "Invalid email or password" });
+        }
+
+        // Compare passwords
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            return res.status(401).json({ error: "Invalid email or password" });
+        }
+
+        // Generate JWT token
+        const token = jwt.sign(
+            { id: user._id, email: user.email }, 
+            "secretkey", 
+            { expiresIn: "1h" }
+        );
+
+        return res.json({ message: "Login Successful", token });
+
+    } catch (error) {
+        console.error('Login error:', error);
+        return res.status(500).json({ error: "Server error" });
+    }
 });
 
-//server start
-app.listen(port, () => {
-    console.log(`listening on port ${port} `);
-  });
+// Start server
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server is running on port ${PORT}`);
+});
