@@ -14,6 +14,9 @@ function Login() {
     try{
       const response = await axios.post("http://localhost:3001/login", {email, password});
       alert("Login Successful");
+      // navigate("/home");
+      
+      // Store the token in local storage
       localStorage.setItem("token",response.data.token);
 
     }catch(err){
