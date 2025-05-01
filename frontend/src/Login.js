@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import './Login.css'
 import axios from "axios";
 
 function Login() {
+  const navigate = useNavigate();
   const [ email, setEmail]= useState("");
   const [ password, setPassword]= useState("");
   const [error, setError]= useState("");
@@ -14,7 +16,9 @@ function Login() {
     try{
       const response = await axios.post("http://localhost:3001/login", {email, password});
       alert("Login Successful");
-      // navigate("/home");
+      console.log('Login Response:', response);
+
+      navigate("/dashboard");
       
       // Store the token in local storage
       localStorage.setItem("token",response.data.token);
