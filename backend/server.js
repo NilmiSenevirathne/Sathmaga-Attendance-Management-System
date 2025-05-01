@@ -32,7 +32,7 @@ mongoose.connect('mongodb+srv://SathmagaEdu:sathmaga123@cluster0.3vbhh.mongodb.n
 
 // Routes
 app.use("/api", userRoutes);
-app.post("/login" , async (req, res) => {  });
+
 
 // Login route
 app.post("/login", async (req, res) => {
