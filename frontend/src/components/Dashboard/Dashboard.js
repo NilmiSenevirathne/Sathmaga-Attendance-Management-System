@@ -1,11 +1,14 @@
 import React from 'react';
 import InsideNav from '../Navbar/insideNav';
+import Sidebar from '../Sidebar/Sidebar';
 
 const Dashboard = () => {
     return (
         <div>
             <InsideNav/>
-            <h1>Dashboard</h1>
+            
+            <Sidebar/>
+            
         </div>
     );
 };
