@@ -6,7 +6,7 @@ const InsideNav = () => {
         <nav className='inside-nav'>
             <div className='nav-left'>
                  <img src="/sathmagalogo.png" alt="Sathmaga Logo" className="logo" />
-                 <h3 className='titlw'>Sathmaga Educational Institute</h3>
+                 <h3 className='titlw'>සත්මග  අධ්‍යාපන ආයතනය</h3>
 
             </div>
 
