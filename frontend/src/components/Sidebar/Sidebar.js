@@ -8,9 +8,9 @@ const Sidebar = ({ accountType = 'admin', setAccountType }) => {
 
   const accountTypes = {
     admin: 'Administrator',
-    manager: 'Manager',
-    employee: 'Employee',
-    customer: 'Customer'
+    attendancemarker: 'Attendance Marker',
+    teacher: 'Teacher',
+    
   };
 
   const menuItems = {
@@ -21,22 +21,17 @@ const Sidebar = ({ accountType = 'admin', setAccountType }) => {
       { name: 'Reports', icon: <FaFileAlt />, path: '/reports' },
       { name: 'Settings', icon: <FaCog />, path: '/settings' }
     ],
-    manager: [
+    attendancemarker: [
       { name: 'Dashboard', icon: <FaChartLine />, path: '/dashboard' },
       { name: 'Inventory', icon: <FaBox />, path: '/inventory' },
       { name: 'Sales', icon: <FaMoneyBill />, path: '/sales' },
       { name: 'Reports', icon: <FaFileAlt />, path: '/reports' }
     ],
-    employee: [
+    teacher: [
       { name: 'Dashboard', icon: <FaChartLine />, path: '/dashboard' },
       { name: 'Orders', icon: <FaShoppingCart />, path: '/orders' },
       { name: 'Products', icon: <FaBox />, path: '/products' }
-    ],
-    customer: [
-      { name: 'Dashboard', icon: <FaChartLine />, path: '/dashboard' },
-      { name: 'My Orders', icon: <FaShoppingCart />, path: '/orders' },
-      { name: 'Profile', icon: <FaUser />, path: '/profile' }
-    ]
+    ]   
   };
 
   // Ensure accountType has a valid default and exists in menuItems
@@ -107,7 +102,7 @@ const Sidebar = ({ accountType = 'admin', setAccountType }) => {
         </nav>
 
         <div className="sidebar-footer">
-          <a href="/logout" className="menu-item">
+          <a href="/login" className="menu-item">
             <span className="menu-icon"><FaSignOutAlt /></span>
             {!isCollapsed && <span className="menu-text">Logout</span>}
           </a>
