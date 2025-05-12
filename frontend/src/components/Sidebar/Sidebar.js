@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
-import { FaBars, FaTimes, FaUser, FaChartLine, FaCog, FaShoppingCart, FaBox, FaUsers, FaMoneyBill, FaFileAlt, FaSignOutAlt } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import { FaBars, FaTimes, FaChartLine, FaCog, FaShoppingCart, FaBox, FaUsers, FaMoneyBill, FaFileAlt, FaSignOutAlt } from 'react-icons/fa';
 import './sidebar.css';
 
-const Sidebar = ({ accountType = 'admin', setAccountType }) => {
+const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userRole, setUserRole] = useState('admin'); // Default role
 
+  // Map role keys to readable names
   const accountTypes = {
     admin: 'Administrator',
     attendancemarker: 'Attendance Marker',
     teacher: 'Teacher',
-    
   };
 
+  // Define sidebar menu for each role
   const menuItems = {
     admin: [
       { name: 'Dashboard', icon: <FaChartLine />, path: '/dashboard' },
@@ -31,31 +33,23 @@ const Sidebar = ({ accountType = 'admin', setAccountType }) => {
       { name: 'Dashboard', icon: <FaChartLine />, path: '/dashboard' },
       { name: 'Orders', icon: <FaShoppingCart />, path: '/orders' },
       { name: 'Products', icon: <FaBox />, path: '/products' }
-    ]   
+    ]
   };
 
-  // Ensure accountType has a valid default and exists in menuItems
-  const currentAccountType = Object.keys(menuItems).includes(accountType) 
-    ? accountType 
-    : 'admin';
-  const currentMenuItems = menuItems[currentAccountType] || [];
-
-  const toggleSidebar = () => {
-    setIsCollapsed(!isCollapsed);
-  };
-
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
-
-  const handleAccountChange = (newAccountType) => {
-    if (Object.keys(menuItems).includes(newAccountType)) {
-      setAccountType(newAccountType);
+  // Load user role from local storage (or you can use Context/Redux instead)
+  useEffect(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem('user'));
+    if (loggedInUser?.role && menuItems[loggedInUser.role.toLowerCase()]) {
+      setUserRole(loggedInUser.role.toLowerCase());
     } else {
-      setAccountType('admin');
+      setUserRole('admin');
     }
-    setMobileMenuOpen(false);
-  };
+  }, []);
+
+  const toggleSidebar = () => setIsCollapsed(!isCollapsed);
+  const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
+
+  const currentMenuItems = menuItems[userRole] || [];
 
   return (
     <>
@@ -66,28 +60,18 @@ const Sidebar = ({ accountType = 'admin', setAccountType }) => {
 
       <div className={`sidebar ${isCollapsed ? 'collapsed' : ''} ${mobileMenuOpen ? 'mobile-open' : ''}`}>
         <div className="sidebar-header">
-          {!isCollapsed && <h2>{accountTypes[currentAccountType]} Panel</h2>}
+          {!isCollapsed && (
+            <>
+              <h2>Sathmaga Institute</h2>
+              <h4>{accountTypes[userRole]} Panel</h4>
+            </>
+          )}
           <button className="collapse-btn" onClick={toggleSidebar}>
             {isCollapsed ? <FaBars /> : <FaTimes />}
           </button>
         </div>
 
-        <div className="account-switcher">
-          {!isCollapsed && <h4>Switch Account:</h4>}
-          <div className="account-buttons">
-            {Object.keys(accountTypes).map((type) => (
-              <button
-                key={type}
-                className={`account-btn ${currentAccountType === type ? 'active' : ''}`}
-                onClick={() => handleAccountChange(type)}
-                title={accountTypes[type]}
-              >
-                {isCollapsed ? <FaUser /> : accountTypes[type].charAt(0)}
-              </button>
-            ))}
-          </div>
-        </div>
-
+        {/* Sidebar menu */}
         <nav className="sidebar-menu">
           <ul>
             {currentMenuItems.map((item, index) => (
@@ -101,6 +85,7 @@ const Sidebar = ({ accountType = 'admin', setAccountType }) => {
           </ul>
         </nav>
 
+        {/* Logout button */}
         <div className="sidebar-footer">
           <a href="/login" className="menu-item">
             <span className="menu-icon"><FaSignOutAlt /></span>
