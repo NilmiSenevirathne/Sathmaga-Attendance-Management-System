@@ -1,13 +1,18 @@
 import React from 'react';
-import InsideNav from '../Navbar/insideNav';
-import Sidebar from '../Sidebar/Sidebar';
+import SideNav from '../SideNav';
+import Header from '../Header';
+import Footer from '../Footer';
+
 
 const Dashboard = () => {
     return (
         <div>
-            <InsideNav/>
+           
+            <Header />
+            <SideNav />
+            <Footer />
+
             
-            <Sidebar/>
             
         </div>
     );
