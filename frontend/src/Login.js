@@ -16,10 +16,13 @@ function Login() {
     try{
       const response = await axios.post("http://localhost:3001/login", {email, password});
       alert("Login Successful");
-      navigate("/dashboard");
       
       // Store the token in local storage
       localStorage.setItem("token",response.data.token);
+      // Store the user data in local storage
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      // Redirect to the dashboard
+      navigate("/dashboard");
 
     }catch(err){
       setError(err.response?.data?.error || "Login Failed");

@@ -63,6 +63,17 @@ app.post("/login", async (req, res) => {
             "secretkey", 
             { expiresIn: "1h" }
         );
+        // Return token and user details
+      return res.json({
+      message: "Login Successful",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        role: user.role,
+        email: user.email,
+      },
+    });
 
         return res.json({ message: "Login Successful", token });
 
