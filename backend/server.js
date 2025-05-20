@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 const cors = require("cors");
 require("dotenv").config();
 
+const { User } = require("./models/User"); 
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -25,16 +27,7 @@ mongoose.connect(process.env.MONGO_URI, {
   console.error("MongoDB connection error:", err);
 });
 
-// User model
-const UserSchema = new mongoose.Schema({
-  name: String,
-  email: { type: String, unique: true },
-  password: String,
-  role: String
-});
-const User = mongoose.model("User", UserSchema);
-
-// Login route
+//Login Route
 app.post("/api/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -43,6 +36,9 @@ app.post("/api/login", async (req, res) => {
       return res.status(400).json({ error: "Email and password are required" });
 
     const user = await User.findOne({ email: email.toLowerCase() });
+
+    console.log("User found:", user);
+
     if (!user)
       return res.status(401).json({ error: "Invalid email or password" });
 
@@ -50,14 +46,19 @@ app.post("/api/login", async (req, res) => {
     if (!isMatch)
       return res.status(401).json({ error: "Invalid email or password" });
 
-    const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
 
     return res.json({
       message: "Login Successful",
       token,
       user: {
         id: user._id,
-        name: user.name,
+        fname: user.fname,
+        lname: user.lname,
         role: user.role,
         email: user.email
       }
