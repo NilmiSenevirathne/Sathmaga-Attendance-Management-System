@@ -23,14 +23,14 @@ const Sidebar = ({ user = {} }) => {
   const [isOpen, setIsOpen] = useState(true);
   const toggleSidebar = () => setIsOpen((prev) => !prev);
 
-  const name = user?.name || "Guest";
+  // const name = user ? `${user.fname} ${user.lname}` : "Guest";
   const role = user?.role || "Unknown";
 
   const drawerWidth = isOpen ? 250 : 70;
 
   const renderTabs = () => {
     switch (role) {
-      case "Administrator":
+      case "Admin":
         return [
           { text: "Dashboard", icon: <DashboardIcon /> },
           { text: "Manage Users", icon: <GroupIcon /> },
@@ -64,6 +64,8 @@ const Sidebar = ({ user = {} }) => {
         '& .MuiDrawer-paper': {
           width: drawerWidth,
           transition: 'width 0.3s ease-in-out',
+          backgroundColor: '#1976a2',
+          color: '#ffffff',
           overflowX: 'hidden',
         },
       }}
@@ -83,7 +85,7 @@ const Sidebar = ({ user = {} }) => {
               Sathmaga Institute
             </Typography>
             <Typography variant="body2" sx={{ mt: 1 }}>
-              Logged in as: <strong>{name}</strong><br />
+              {/* Logged in as: <strong>{name}</strong><br /> */}
               Role: <strong>{role}</strong>
             </Typography>
             <Divider sx={{ my: 2 }} />
