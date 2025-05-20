@@ -22,7 +22,7 @@ const Dashboard = () => {
         <div>
            
            
-            <SideNav  user={user}/>
+            <SideNav  user={user} clearUser={() => setUser(null)}/>
             <Footer />
 
             
