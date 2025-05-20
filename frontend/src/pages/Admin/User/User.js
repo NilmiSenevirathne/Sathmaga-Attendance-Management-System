@@ -78,6 +78,7 @@ function User() {
         fname: user.fname,
         lname: user.lname,
         email: user.email,
+        password: user.password,
         NIC: user.NIC,
         profile_pic: user.profile_pic || '',
         contact: user.contact,
@@ -90,6 +91,7 @@ function User() {
         fname: '',
         lname: '',
         email: '',
+        password: '',
         NIC: '',
         profile_pic: '',
         contact: '',
@@ -118,6 +120,7 @@ function User() {
         .put(`http://localhost:3001/users/${editingUser._id}`, formData)
         .then(() => {
           fetchUsers();
+            alert('User updated successfully');
           setOpenDialog(false);
         })
         .catch((err) => console.error(err));
@@ -125,11 +128,13 @@ function User() {
       axios
         .post('http://localhost:3001/register', formData)
         .then(() => {
+            alert('User added successfully');
           fetchUsers();
           setOpenDialog(false);
         })
         .catch((err) => console.error(err));
     }
+    
   };
 
   return (
@@ -212,6 +217,7 @@ function User() {
               <TextField label="First Name" name="fname" value={formData.fname} onChange={handleFormChange} fullWidth />
               <TextField label="Last Name" name="lname" value={formData.lname} onChange={handleFormChange} fullWidth />
               <TextField label="Email" name="email" value={formData.email} onChange={handleFormChange} fullWidth />
+              <TextField label="Password" name="password" type="password" value={formData.password} onChange={handleFormChange} fullWidth />
               <TextField label="NIC" name="NIC" value={formData.NIC} onChange={handleFormChange} fullWidth />
               <TextField label="Profile Pic URL" name="profile_pic" value={formData.profile_pic} onChange={handleFormChange} fullWidth />
               <TextField label="Contact" name="contact" value={formData.contact} onChange={handleFormChange} fullWidth />
