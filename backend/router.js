@@ -4,6 +4,9 @@ const controller = require('./controller');
 const { User } = require('./model');
 
 router.post('/register',controller.addUser);
+router.put('/users/:id', controller.updateUser);
+router.delete('/users/:id', controller.deleteUser);
+
 
 router.get('/users', async (req, res) => {
     try {
