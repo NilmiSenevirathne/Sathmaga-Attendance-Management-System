@@ -72,3 +72,36 @@ exports.addUser = async (req, res) => {
         });
     }
 };
+
+// Update user
+exports.updateUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const updateFields = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    // If updating password, hash it
+    if (updateFields.password) {
+      updateFields.password = await bcrypt.hash(updateFields.password, 10);
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updateFields, { new: true }).select('-password');
+    res.status(200).json({ message: "User updated successfully", user: updatedUser });
+
+  } catch (err) {
+    res.status(500).json({ message: "Error updating user", error: err.message });
+  }
+};
+
+// Delete user
+exports.deleteUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    await User.findByIdAndDelete(userId);
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Error deleting user", error: err.message });
+  }
+};

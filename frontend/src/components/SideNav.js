@@ -48,11 +48,11 @@ const Sidebar = ({ user = {},clearUser, currentTab = "Dashboard", onLogout }) =>
     switch (role) {
       case "Admin":
         return [
-          { text: "Dashboard", icon: <DashboardIcon /> },
-          { text: "Manage Users", icon: <GroupIcon /> },
+          { text: "Dashboard", icon: <DashboardIcon />  },
+          { text: "Manage Users", icon: <GroupIcon />, path:"/users" },
           { text: "Attendance Records", icon: <EventIcon /> },
           { text: "Settings", icon: <SettingsIcon /> },
-        ];
+        ]; 
       case "AttendanceMarker":
         return [
           { text: "Dashboard", icon: <DashboardIcon /> },
@@ -69,10 +69,13 @@ const Sidebar = ({ user = {},clearUser, currentTab = "Dashboard", onLogout }) =>
     }
   };
 
-  const handleTabClick = (tabText) => {
-    setActiveTab(tabText);
-    // Optional: You can add navigation logic here, e.g., react-router navigation
-  };
+  const handleTabClick = (tab) => {
+  setActiveTab(tab.text);
+  if (tab.path) {
+    navigate(tab.path); // Navigate to the path if defined
+  }
+};
+
 
   return (
     <Drawer
@@ -160,49 +163,49 @@ const Sidebar = ({ user = {},clearUser, currentTab = "Dashboard", onLogout }) =>
         )}
 
         {/* Tabs */}
-        <List>
-          {renderTabs().map((tab, index) => {
-            const isActive = activeTab === tab.text;
-            return (
-              <Tooltip
-                key={index}
-                title={!isOpen ? tab.text : ""}
-                placement="right"
-                arrow
-                
-              >
-                <ListItem
-                  button
-                  onClick={() => handleTabClick(tab.text)}
-                  sx={{
-                    px: 3,
-                    mb: 0.5,
-                    borderRadius: 1.5,
-                    bgcolor: isActive
-                      ? "rgba(255, 255, 255, 0.2)"
-                      : "transparent",
-                    color: isActive ? "#fff" : "rgba(255,255,255,0.85)",
-                    transition: "background-color 0.3s, color 0.3s",
-                    "&:hover": {
-                      bgcolor: "rgba(255, 255, 255, 0.15)",
-                      color: "#fff",
-                    },
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      color: isActive ? "#fff" : "rgba(255,255,255,0.7)",
-                      minWidth: 40,
-                    }}
-                  >
-                    {tab.icon}
-                  </ListItemIcon>
-                  {isOpen && <ListItemText primary={tab.text} />}
-                </ListItem>
-              </Tooltip>
-            );
-          })}
-        </List>
+          <List>
+  {renderTabs().map((tab, index) => {
+    const isActive = activeTab === tab.text;
+    return (
+      <Tooltip
+        key={index}
+        title={!isOpen ? tab.text : ""}
+        placement="right"
+        arrow
+      >
+        <ListItem
+          button
+          onClick={() => handleTabClick(tab)} // changed from tab.text to tab
+          sx={{
+            px: 3,
+            mb: 0.5,
+            borderRadius: 1.5,
+            bgcolor: isActive
+              ? "rgba(255, 255, 255, 0.2)"
+              : "transparent",
+            color: isActive ? "#fff" : "rgba(255,255,255,0.85)",
+            transition: "background-color 0.3s, color 0.3s",
+            "&:hover": {
+              bgcolor: "rgba(255, 255, 255, 0.15)",
+              color: "#fff",
+            },
+          }}
+        >
+          <ListItemIcon
+            sx={{
+              color: isActive ? "#fff" : "rgba(255,255,255,0.7)",
+              minWidth: 40,
+            }}
+          >
+            {tab.icon}
+          </ListItemIcon>
+          {isOpen && <ListItemText primary={tab.text} />}
+        </ListItem>
+      </Tooltip>
+    );
+  })}
+</List>
+
       </Box>
 
       {/* Logout Button */}

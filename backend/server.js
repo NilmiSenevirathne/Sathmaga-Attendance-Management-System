@@ -5,7 +5,8 @@ const jwt = require("jsonwebtoken");
 const cors = require("cors");
 require("dotenv").config();
 
-const { User } = require("./models/User"); 
+const userRoutes = require("./router");
+const { User } = require("./model"); 
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -26,6 +27,8 @@ mongoose.connect(process.env.MONGO_URI, {
 }).catch((err) => {
   console.error("MongoDB connection error:", err);
 });
+
+app.use('/', userRoutes);
 
 //Login Route
 app.post("/api/login", async (req, res) => {
