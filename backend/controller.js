@@ -94,3 +94,73 @@ exports.deleteUser = async (req, res) => {
     res.status(500).json({ message: "Error deleting user", error: err.message });
   }
 };
+
+const express = require('express');
+const router = express.Router();
+const { Subject } = require('../models'); // Adjust path to your models
+
+
+// Get all subjects
+router.get('/', async (req, res) => {
+  try {
+    const subjects = await Subject.find();
+    res.json(subjects);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch subjects' });
+  }
+});
+
+// Get subject by id
+router.get('/:id', async (req, res) => {
+  try {
+    const subject = await Subject.findById(req.params.id);
+    if (!subject) return res.status(404).json({ error: 'Subject not found' });
+    res.json(subject);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch subject' });
+  }
+});
+
+// Create a new subject
+router.post('/', async (req, res) => {
+  try {
+    const { subject_name } = req.body;
+    if (!subject_name) return res.status(400).json({ error: 'Subject name required' });
+
+    const newSubject = new Subject({ subject_name });
+    await newSubject.save();
+    res.status(201).json(newSubject);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to create subject' });
+  }
+});
+
+// Update subject
+router.put('/:id', async (req, res) => {
+  try {
+    const { subject_name } = req.body;
+    const updated = await Subject.findByIdAndUpdate(
+      req.params.id,
+      { subject_name },
+      { new: true }
+    );
+    if (!updated) return res.status(404).json({ error: 'Subject not found' });
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update subject' });
+  }
+});
+
+// Delete subject
+router.delete('/:id', async (req, res) => {
+  try {
+    const deleted = await Subject.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ error: 'Subject not found' });
+    res.json({ message: 'Subject deleted' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete subject' });
+  }
+});
+
+
+

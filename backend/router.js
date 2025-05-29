@@ -8,6 +8,8 @@ router.put('/users/:id', controller.updateUser);
 router.delete('/users/:id', controller.deleteUser);
 
 
+
+
 router.get('/users', async (req, res) => {
     try {
       const users = await User.find().select('-password'); // Exclude password field
@@ -17,6 +19,8 @@ router.get('/users', async (req, res) => {
       res.status(500).json({ message: 'Error fetching users' });
     }
   });
+  
+
   
 
 module.exports = router;

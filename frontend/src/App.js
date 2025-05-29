@@ -4,6 +4,7 @@ import Login from './Login';
 import Home from '..//src/components/home/Home';
 import Dashboard from './components/Dashboard/Dashboard';
 import User from './pages/Admin/User/User';
+import Subject from './pages/Admin/Subject';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path='/dashboard'  element={<Dashboard/>}></Route>
           <Route path='/users'  element={<User/>}></Route>
           <Route path='/adduser'  element={<Dashboard/>}></Route> 
+          <Route path='/subjects'  element={<Subject/>}></Route>
           {/* Add more routes as needed */}
           
           
