@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import {
   Drawer,
   List,
@@ -22,60 +22,66 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import logo from "../images/sathmagalogo.png";
 import { useNavigate } from "react-router-dom";
 
-
-// Import Google Font Roboto Slab via CSS or link in index.html for better class title font
-// Example: <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet" />
-
-const Sidebar = ({ user = {},clearUser, currentTab = "Dashboard", onLogout }) => {
+const Sidebar = ({ user = {}, clearUser, currentTab, onLogout }) => {
   const [isOpen, setIsOpen] = useState(true);
-  const [activeTab, setActiveTab] = useState(currentTab);
   const navigate = useNavigate();
-
-
-  const toggleSidebar = () => setIsOpen((prev) => !prev);
 
   const role = user?.role || "Unknown";
   const drawerWidth = isOpen ? 280 : 70;
 
-    const handleLogout = () => {
-    localStorage.removeItem("user"); 
-    clearUser?.(); 
-    navigate("/login");
-  };
-
-
+  // Function to return tabs based on user role
   const renderTabs = () => {
     switch (role) {
       case "Admin":
         return [
-          { text: "Dashboard", icon: <DashboardIcon />  },
-          { text: "Manage Users", icon: <GroupIcon />, path:"/users" },
-          { text: "Attendance Records", icon: <EventIcon /> },
-          { text: "Settings", icon: <SettingsIcon /> },
-        ]; 
+          { text: "Dashboard", icon: <DashboardIcon /> },
+          { text: "Manage Users", icon: <GroupIcon />, path: "/users" },
+          { text: "Manage Subjects", icon: <EventIcon />, path: "/subjects" },
+          { text: "Manage Attendance", icon: <SettingsIcon />, path: "/attendance" },
+          { text: "Manage Grades", icon: <SettingsIcon /> ,path: "/grades"},
+          { text: "Reports", icon: <GroupIcon />, path: "/reports" },
+          { text: "Settings", icon: <SettingsIcon />, path: "/settings" },
+
+        ];
       case "AttendanceMarker":
         return [
           { text: "Dashboard", icon: <DashboardIcon /> },
-          { text: "Mark Attendance", icon: <EventIcon /> },
-          { text: "Reports", icon: <GroupIcon /> },
+          { text: "Manage Attendance ", icon: <EventIcon /> },
+          { text: "Manage Reports", icon: <GroupIcon /> },
+          { text: "chats", icon: <SettingsIcon /> },
+          { text: "Settings", icon: <SettingsIcon /> },
         ];
       case "Teacher":
         return [
-          { text: "My Timetable", icon: <DashboardIcon /> },
-          { text: "Attendance Report", icon: <EventIcon /> },
+          { text: "View Subjects", icon: <DashboardIcon /> },
+          { text: "View Grades", icon: <EventIcon /> },
+          { text: "Request Attendance", icon: <GroupIcon />, path: "/attendance" },
+          { text: "Settings", icon: <SettingsIcon /> },
         ];
       default:
         return [{ text: "Home", icon: <DashboardIcon /> }];
     }
   };
 
-  const handleTabClick = (tab) => {
-  setActiveTab(tab.text);
-  if (tab.path) {
-    navigate(tab.path); // Navigate to the path if defined
-  }
-};
+  // Initialize activeTab state to currentTab if provided, otherwise first tab text or "Home"
+  const [activeTab, setActiveTab] = useState(
+    currentTab || (renderTabs()[0]?.text || "Home")
+  );
 
+  const toggleSidebar = () => setIsOpen((prev) => !prev);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    clearUser?.();
+    navigate("/login");
+  };
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab.text);
+    if (tab.path) {
+      navigate(tab.path); // Navigate to the path if defined
+    }
+  };
 
   return (
     <Drawer
@@ -163,49 +169,48 @@ const Sidebar = ({ user = {},clearUser, currentTab = "Dashboard", onLogout }) =>
         )}
 
         {/* Tabs */}
-          <List>
-  {renderTabs().map((tab, index) => {
-    const isActive = activeTab === tab.text;
-    return (
-      <Tooltip
-        key={index}
-        title={!isOpen ? tab.text : ""}
-        placement="right"
-        arrow
-      >
-        <ListItem
-          button
-          onClick={() => handleTabClick(tab)} // changed from tab.text to tab
-          sx={{
-            px: 3,
-            mb: 0.5,
-            borderRadius: 1.5,
-            bgcolor: isActive
-              ? "rgba(255, 255, 255, 0.2)"
-              : "transparent",
-            color: isActive ? "#fff" : "rgba(255,255,255,0.85)",
-            transition: "background-color 0.3s, color 0.3s",
-            "&:hover": {
-              bgcolor: "rgba(255, 255, 255, 0.15)",
-              color: "#fff",
-            },
-          }}
-        >
-          <ListItemIcon
-            sx={{
-              color: isActive ? "#fff" : "rgba(255,255,255,0.7)",
-              minWidth: 40,
-            }}
-          >
-            {tab.icon}
-          </ListItemIcon>
-          {isOpen && <ListItemText primary={tab.text} />}
-        </ListItem>
-      </Tooltip>
-    );
-  })}
-</List>
-
+        <List>
+          {renderTabs().map((tab, index) => {
+            const isActive = activeTab === tab.text;
+            return (
+              <Tooltip
+                key={index}
+                title={!isOpen ? tab.text : ""}
+                placement="right"
+                arrow
+              >
+                <ListItem
+                  button
+                  onClick={() => handleTabClick(tab)}
+                  sx={{
+                    px: 3,
+                    mb: 0.5,
+                    borderRadius: 1.5,
+                    bgcolor: isActive
+                      ? "rgba(255, 255, 255, 0.2)"
+                      : "transparent",
+                    color: isActive ? "#fff" : "rgba(255,255,255,0.85)",
+                    transition: "background-color 0.3s, color 0.3s",
+                    "&:hover": {
+                      bgcolor: "rgba(255, 255, 255, 0.15)",
+                      color: "#fff",
+                    },
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      color: isActive ? "#fff" : "rgba(255,255,255,0.7)",
+                      minWidth: 40,
+                    }}
+                  >
+                    {tab.icon}
+                  </ListItemIcon>
+                  {isOpen && <ListItemText primary={tab.text} />}
+                </ListItem>
+              </Tooltip>
+            );
+          })}
+        </List>
       </Box>
 
       {/* Logout Button */}
